@@ -15,18 +15,23 @@ def auth_user(func):
     """
 
     def wrapper():
-        if not hasattr(current_app, 'login_manager'):
+        if not hasattr(current_app, "login_manager"):
             return func()
 
         cr = current_app.login_manager
         current_user = LocalProxy(lambda: get_user())
 
         def get_user():
-            if _request_ctx_stack.top is not None and not hasattr(_request_ctx_stack.top, 'user'):
+            if _request_ctx_stack.top is not None and not hasattr(
+                _request_ctx_stack.top, "user"
+            ):
                 cr._load_user()
-            return getattr(_request_ctx_stack.top, 'user', None)
+            return getattr(_request_ctx_stack.top, "user", None)
+
         if not (current_user and current_user.is_authenticated):
-            return make_response_content(ErrorResponse(MsgCode.AUTH_FAIL), http_status=401)
+            return make_response_content(
+                ErrorResponse(MsgCode.AUTH_FAIL), http_status=401
+            )
         return func()
 
     return wrapper
@@ -40,8 +45,10 @@ def auth_method(func):
     """
 
     def wrapper():
-        if request.method != 'POST':
-            return make_response_content(ErrorResponse(MsgCode.REQUEST_METHOD_ERROR), http_status=401)
+        if request.method != "POST":
+            return make_response_content(
+                ErrorResponse(MsgCode.REQUEST_METHOD_ERROR), http_status=401
+            )
         return func()
 
     return wrapper
