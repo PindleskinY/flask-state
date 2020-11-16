@@ -1,0 +1,29 @@
+name: Tests
+on: [pull_request, push]
+jobs:
+  lint_python:
+    name: ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - {name: Linux, python: '3.8', os: ubuntu-latest, tox: py38}
+          - {name: Windows, python: '3.8', os: windows-latest, tox: py38}
+          - {name: Mac, python: '3.8', os: macos-latest, tox: py38}
+          - {name: '3.8', python: '3.8', os: ubuntu-latest, tox: py38}
+          - {name: '3.7', python: '3.7', os: ubuntu-latest, tox: py37}
+          - {name: '3.6', python: '3.6', os: ubuntu-latest, tox: py36}
+          - {name: '3.5', python: '3.5', os: ubuntu-latest, tox: py35}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        - with:
+            - python-version: ${{ matrix.python }}
+      - run: pip install black codespell flake8 isort pytest pyupgrade
+      - run: black --check . || true
+      - run: codespell --quiet-level=2  # --ignore-words-list="" --skip=""
+      - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+      - run: isort --profile black .
+      - run: pip install -r requirements/tests.txt
+      - run: pytest .
+      - run: shopt -s globstar && pyupgrade --py36-plus **/*.py
