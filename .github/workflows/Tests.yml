@@ -25,8 +25,7 @@ jobs:
           pip install -U wheel
           pip install -U setuptools
           python -m pip install -U pip
-      - run: pip install black codespell flake8 isort pytest
-      - run: black --check . || true
+      - run: pip install codespell flake8 isort pytest
       - run: codespell --quiet-level=2  # --ignore-words-list="" --skip=""
       - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
       - run: isort --profile black .
