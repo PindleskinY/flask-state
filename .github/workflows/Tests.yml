@@ -29,6 +29,7 @@ jobs:
       - run: pip install codespell flake8 isort pytest
       - run: codespell --quiet-level=2  # --ignore-words-list="" --skip=""
       - run: flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        if: matrix.name != '3.5'
       - run: isort --profile black .
       - run: pip install -r requirements/tests.txt
       - run: pytest .
