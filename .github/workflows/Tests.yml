@@ -29,11 +29,9 @@ jobs:
         id: pip-cache
         uses: actions/cache@v2
         with:
-          path: ~/.cache/pip
+          path: pip/cache
           key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
-            ${{ runner.os }}-${{ matrix.python }}
+          restore-keys: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
       - name: install dependencies
         run: pip install -r requirements/dev.txt
         if: matrix.python != '3.5'
