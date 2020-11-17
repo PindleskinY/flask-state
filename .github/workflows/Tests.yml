@@ -25,26 +25,24 @@ jobs:
           pip install -U wheel
           pip install -U setuptools
           python -m pip install -U pip
-      - name: cache pip
-        id: pip-cache
-        uses: actions/cache@v2
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/tests.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-${{ matrix.python }}-
-            ${{ runner.os }}-
-      - name: install dependencies
-        run: pip install -r requirements/tests.txt
       - name: lint python
         run: |
+          pip install black codespell flake8 isort
           black --check . || true
           codespell --quiet-level=2
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           isort --profile black .
         if: matrix.python != '3.5'
+      - name: cache pip
+          id: pip-cache
+          uses: actions/cache@v2
+          with:
+            path: ~/.cache/pip
+            key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/tests.txt') }}
+            restore-keys: |
+              ${{ runner.os }}-${{ matrix.python }}-
+              ${{ runner.os }}-
       - name: utils test
         run: |
-          pip install pytest
           pip install -r requirements/tests.txt
           pytest .
