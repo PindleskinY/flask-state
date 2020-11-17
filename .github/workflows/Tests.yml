@@ -26,7 +26,7 @@ jobs:
           pip install -U setuptools
           python -m pip install -U pip
       - name: cache pip
-        uses: action/cache@v2
+        uses: actions/cache@v2
         with:
           path: ~/.pip
           key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/tests.txt') }}
