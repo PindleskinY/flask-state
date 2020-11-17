@@ -30,12 +30,15 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/dev.txt') }}
+          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/*.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python }}-
             ${{ runner.os }}-
       - name: install dependencies
         run: pip install -r requirements/dev.txt
+        if: matrix.python != '3.5'
+      - name: install py35 dependencies
+        run: pip install -r requirements/tests.txt
       - name: lint python
         run: |
           black --check . || true
