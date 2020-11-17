@@ -33,7 +33,9 @@ jobs:
         with:
           path: ${{ steps.pip-cache.outputs.dir }}
           key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
-          restore-keys: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
+            ${{ runner.os }}-${{ matrix.python }}
       - name: install dependencies
         run: pip install -r requirements/dev.txt
         if: matrix.python != '3.5'
