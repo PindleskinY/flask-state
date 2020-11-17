@@ -39,6 +39,7 @@ jobs:
         if: matrix.python != '3.5'
       - name: install py35 dependencies
         run: pip install -r requirements/tests.txt
+        if: matrix.python == '3.5'
       - name: lint python
         run: |
           black --check . || true
