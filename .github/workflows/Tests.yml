@@ -34,7 +34,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python }}-
             ${{ runner.os }}-
-      - name: install depen
+      - name: install dependencies
         run: pip install -r requirements/dev.txt
       - name: lint python
         run: |
