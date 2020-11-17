@@ -25,9 +25,13 @@ jobs:
           pip install -U wheel
           pip install -U setuptools
           python -m pip install -U pip
+      - name: cache pip
+        uses: action/cache@v2
+        with:
+          path: ~/.pip
+          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/tests.txt') }}
       - name: lint python
         run: |
-          pip install black codespell flake8 isort
           black --check . || true
           codespell --quiet-level=2
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
