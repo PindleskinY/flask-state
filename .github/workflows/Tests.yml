@@ -33,7 +33,6 @@ jobs:
           key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/dev.txt') }}
           restore-keys: |
             ${{ runner.os }}-${{ matrix.python }}-
-            ${{ runner.os }}-
       - name: install dependencies
         run: pip install -r requirements/dev.txt
         if: matrix.python != '3.5'
