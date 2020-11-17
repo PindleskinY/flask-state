@@ -34,14 +34,14 @@ jobs:
           isort --profile black .
         if: matrix.python != '3.5'
       - name: cache pip
-          id: pip-cache
-          uses: actions/cache@v2
-          with:
-            path: ~/.cache/pip
-            key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/tests.txt') }}
-            restore-keys: |
-              ${{ runner.os }}-${{ matrix.python }}-
-              ${{ runner.os }}-
+        id: pip-cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('setup.py') }}-${{ hashFiles('requirements/tests.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python }}-
+            ${{ runner.os }}-
       - name: utils test
         run: |
           pip install -r requirements/tests.txt
