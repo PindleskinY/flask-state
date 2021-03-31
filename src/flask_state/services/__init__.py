@@ -1,4 +1,6 @@
-from ..conf.config import Constant
+from ..conf.config import Config
+from ..exceptions.log_msg import WarningMsg
+from ..utils.logger import logger
 
 
 # Create redis object
@@ -9,10 +11,16 @@ class RedisConn:
     def set_redis(self, redis_conf):
         try:
             import redis
-            self.redis = redis.Redis(host=redis_conf.get('REDIS_HOST'), port=redis_conf.get('REDIS_PORT'),
-                                     password=redis_conf.get('REDIS_PASSWORD'),
-                                     socket_connect_timeout=Constant.REDIS_TIMEOUT)
+
+            self.redis = redis.Redis(
+                host=redis_conf.get("REDIS_HOST"),
+                port=redis_conf.get("REDIS_PORT"),
+                password=redis_conf.get("REDIS_PASSWORD"),
+                socket_connect_timeout=Config.REDIS_CONNECT_TIMEOUT,
+                socket_timeout=Config.REDIS_TIMEOUT,
+            )
         except ImportError:
+            logger.warning(WarningMsg.LACK_REDIS.get_msg())
             self.redis = None
 
     def get_redis(self):

@@ -11,7 +11,6 @@ jobs:
           - {name: Linux, python: '3.9', os: ubuntu-latest}
           - {name: Windows, python: '3.9', os: windows-latest}
           - {name: Mac, python: '3.9', os: macos-latest}
-          - {name: '3.9', python: '3.9', os: ubuntu-latest}
           - {name: '3.8', python: '3.8', os: ubuntu-latest}
           - {name: '3.7', python: '3.7', os: ubuntu-latest}
           - {name: '3.6', python: '3.6', os: ubuntu-latest}
@@ -26,16 +25,29 @@ jobs:
           pip install -U wheel
           pip install -U setuptools
           python -m pip install -U pip
+      - name: get pip cache dir
+        id: pip-cache
+        run: echo "::set-output name=dir::$(pip cache dir)"
+      - name: cache pip
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.pip-cache.outputs.dir }}
+          key: ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ matrix.python }}-${{ hashFiles('requirements/dev.txt') }}
+            ${{ runner.os }}-${{ matrix.python }}
+      - name: install dependencies
+        run: pip install -r requirements/dev.txt
+        if: matrix.python != '3.5'
+      - name: install py35 dependencies
+        run: pip install -r requirements/tests.txt
+        if: matrix.python == '3.5'
       - name: lint python
         run: |
-          pip install black codespell flake8 isort
-          black --check . || true
+          black -l 120 --check . || true
           codespell --quiet-level=2
           flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           isort --profile black .
         if: matrix.python != '3.5'
       - name: utils test
-        run: |
-          pip install pytest
-          pip install -r requirements/tests.txt
-          pytest .
+        run: pytest .

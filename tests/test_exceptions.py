@@ -10,7 +10,7 @@ def test_msg_code():
             assert isinstance(item.get_msg(), str)
             assert isinstance(item.get_code(), int)
         except Exception as e:
-            assert isinstance(type(e), AttributeError)
+            assert isinstance(e, AttributeError)
 
 
 def test_log_msg():
@@ -23,9 +23,9 @@ def test_log_msg():
             assert isinstance(info.get_msg(), str)
             assert isinstance(info.get_level(), str)
         except Exception as e:
-            assert isinstance(type(e), AttributeError)
-        assert info.get_level() == 'error'
-        assert info.get_msg('error') == info.get_msg() + 'error'
+            assert isinstance(e, AttributeError)
+        assert info.get_level() == "error"
+        assert info.get_msg("error") == info.get_msg() + "error"
 
     # warning level
     for info in log_msg.WarningMsg:
@@ -33,9 +33,9 @@ def test_log_msg():
             assert isinstance(info.get_msg(), str)
             assert isinstance(info.get_level(), str)
         except Exception as e:
-            assert isinstance(type(e), AttributeError)
-        assert info.get_level() == 'warning'
-        assert info.get_msg('warning') == info.get_msg() + 'warning'
+            assert isinstance(e, AttributeError)
+        assert info.get_level() == "warning"
+        assert info.get_msg("warning") == info.get_msg() + "warning"
 
     # info level
     for info in log_msg.InfoMsg:
@@ -43,6 +43,6 @@ def test_log_msg():
             assert isinstance(info.get_msg(), str)
             assert isinstance(info.get_level(), str)
         except Exception as e:
-            assert isinstance(type(e), AttributeError)
-        assert info.get_level() == 'info'
-        assert info.get_msg('info') == info.get_msg() + 'info'
+            assert isinstance(e, AttributeError)
+        assert info.get_level() == "info"
+        assert info.get_msg("info") == info.get_msg() + "info"
