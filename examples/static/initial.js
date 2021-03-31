@@ -280,6 +280,7 @@ class MachineStatus {
                     };
                     this.IOChart.setOption(this.networkIOOption);
 
+
                     this.memoryOption.xAxis.data = data.host.ts;
                     this.memoryOption.series[0].data = data.host.memory;
                     this.consoleMemoryChart.setOption(this.memoryOption);
